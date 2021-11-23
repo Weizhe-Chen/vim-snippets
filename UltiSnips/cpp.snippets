@@ -166,6 +166,7 @@ BOOST_AUTO_TEST_CASE(${3:TestCaseName})
 BOOST_AUTO_TEST_SUITE_END()
 
 endsnippet
+
 snippet boost_test_fixture "Boost test module with fixture" b
 #define BOOST_TEST_MODULE ${1:TestModuleName}
 #include <boost/test/included/unit_test.hpp>
@@ -204,3 +205,51 @@ BOOST_AUTO_TEST_SUITE_END()
 
 endsnippet
 # vim:ft=snippets:
+
+###########################################################################
+#                            Robot Operating System Snippets              #
+###########################################################################
+snippet ros_q2rpy "Transforming quaternion to roll, pitch, yaw" b
+void odometryCallback(const nav_msgs::Odometry &msg) {
+	tf::Quaternion quaternion(
+			msg.pose.pose.orientation.x, msg.pose.pose.orientation.y,
+			msg.pose.pose.orientation.z, msg.pose.pose.orientation.w);
+	tf::Matrix3x3 quaternion_matrix(quaternion);
+	double roll, pitch, yaw;
+	quaternion_matrix.getRPY(roll, pitch, yaw);
+}
+endsnippet
+
+snippet ros_log "ROS_INFO_STREAM" b
+ROS_${2:INFO}_STREAM(${1});
+endsnippet
+
+snippet ros_node "Main function for a ROS node" b
+#include <ros/ros.h>
+
+class $2 {
+	protected:
+		ros::NodeHandle nh_;
+		ros::Subscriber sub_;
+		ros::Publisher pub_;
+
+	public:
+		$2() :
+			nh_{},
+			sub_{nh_.subscribe("${4:sub_topic_name}", ${5:queue_size=1}, &$2::${6:callback_name}, this)},
+			pub_{nh_.advertise<${7:pub_message_type}>("${8:pub_topic_name}", ${9:queue_size=1})} {};
+
+		virtual ~$2(){};
+
+		void $6(const ${10:sub_message_type} &msg) {
+			${0:// tell me something boy~}
+		};
+};
+
+int main(int argc, char **argv) {
+	ros::init(argc, argv, "${1:node_name}");
+	${2:ClassName} ${3:class_name};
+	ros::spin();
+	return 0;
+}
+endsnippet
