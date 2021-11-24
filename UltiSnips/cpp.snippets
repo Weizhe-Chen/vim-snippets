@@ -224,6 +224,32 @@ snippet ros_log "ROS_INFO_STREAM" b
 ROS_${2:INFO}_STREAM(${1});
 endsnippet
 
+global !p
+def ros_info_expand_args(snip):
+	"""
+	This will look how many placeholders ROS_INFO has and adds the separated commas
+	at the end.
+	"""
+	
+	# now add so many "," as much as the amount of placeholders
+	amount_placeholders = snip.tabstops[1].current_text.count("%")
+
+	output = ""
+
+	# Add the amount of tabstops
+	for placeholder_index in range(3, amount_placeholders + 3):
+		output += f", ${placeholder_index}"
+	
+	# convert them into tabstops
+	snip.expand_anon(output)
+
+endglobal
+
+post_jump "ros_info_expand_args(snip)"
+snippet "ros_info" "ROS_INFO" wr
+ROS_INFO("$1\n"$2);
+endsnippet
+
 snippet ros_node "Main function for a ROS node" b
 #include <ros/ros.h>
 
