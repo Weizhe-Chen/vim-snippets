@@ -14,3 +14,30 @@ endsnippet
 snippet ti "Inline tag" b
 <${1:tag}>${2:${VISUAL}}</${1/([\w:._-]+).*/$1/}>
 endsnippet
+
+snippet depend "Inline depend tag" b
+<depend>${1:}</depend>
+endsnippet
+
+snippet build "Inline build_depend tag" b
+<build_depend>${1:}</build_depend>
+endsnippet
+
+snippet exec "Inline exec_depend tag" b
+<exec_depend>${1:}</exec_depend>
+endsnippet
+
+snippet pkg "Skeleton of package.xml" b
+<package format="2">
+	<name>${1:your_package}</name>
+	<version>0.0.0</version>
+	<description>
+		${2:This package adds extra features to rosawesome.}
+	</description>
+	<author>Weizhe (Wesley) Chen</author>
+	<maintainer email="chenweiz@iu.edu">Weizhe (Wesley) Chen</maintainer>
+	<license>BSD</license>
+	<buildtool_depend>catkin</buildtool_depend>
+	${0}
+</package>
+endsnippet
