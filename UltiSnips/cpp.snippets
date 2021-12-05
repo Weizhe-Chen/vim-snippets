@@ -244,31 +244,46 @@ snippet "ros_info" "ROS_INFO" wr
 ROS_INFO("$1\n"$2);
 endsnippet
 
-snippet ros_node "Main function for a ROS node" b
+# snippet ros_node "Main function for a ROS node" b
+# #include <ros/ros.h>
+#
+# class $2 {
+#   protected:
+#     ros::NodeHandle nh_;
+#     ros::Subscriber sub_;
+#     ros::Publisher pub_;
+#
+#   public:
+#     $2() :
+#       nh_{},
+#       sub_{nh_.subscribe("${4:sub_topic_name}", ${5:queue_size=1}, &$2::${6:callback_name}, this)},
+#       pub_{nh_.advertise<${7:pub_message_type}>("${8:pub_topic_name}", ${9:queue_size=1})} {};
+#
+#     virtual ~$2(){};
+#
+#     void $6(const ${10:sub_message_type} &msg) {
+#       ${0:// tell me something boy~}
+#     };
+# };
+#
+# int main(int argc, char **argv) {
+#   ros::init(argc, argv, "${1:node_name}");
+#   ${2:ClassName} ${3:class_name};
+#   ros::spin();
+#   return 0;
+# }
+# endsnippet
+
+snippet ros_main "Main function for a ROS node" b
 #include <ros/ros.h>
 
-class $2 {
-	protected:
-		ros::NodeHandle nh_;
-		ros::Subscriber sub_;
-		ros::Publisher pub_;
-
-	public:
-		$2() :
-			nh_{},
-			sub_{nh_.subscribe("${4:sub_topic_name}", ${5:queue_size=1}, &$2::${6:callback_name}, this)},
-			pub_{nh_.advertise<${7:pub_message_type}>("${8:pub_topic_name}", ${9:queue_size=1})} {};
-
-		virtual ~$2(){};
-
-		void $6(const ${10:sub_message_type} &msg) {
-			${0:// tell me something boy~}
-		};
-};
-
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
 	ros::init(argc, argv, "${1:node_name}");
-	${2:ClassName} ${3:class_name};
+	ros::NodeHandle nh;
+
+	// Construct an object here
+
 	ros::spin();
 	return 0;
 }
